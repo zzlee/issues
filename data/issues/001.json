@@ -1,2 +1,12 @@
-{\n  "id": "001",\n  "title": "support platform holoscan-cuda13-amd64",\n  "status": "open",\n  "priority": "M",
-  "project_title": "qcap-sdk",\n  "description": "Support for platform holoscan-cuda13-amd64 in qcap-sdk",\n  "created_at": "2026-04-10"\n}
+{
+  "id": "001",
+  "title": "support platform holoscan-cuda13-amd64",
+  "status": "open",
+  "priority": "M",
+  "project_title": "qcap-sdk",
+  "description": "Support for platform holoscan-cuda13-amd64 in qcap-sdk",
+  "created_at": "2026-04-10",
+  "comments": [
+    "Use docker image: `nvcr.io/nvidia/clara-holoscan/holoscan:v4.1.0-cuda13`"
+  ]
+}
