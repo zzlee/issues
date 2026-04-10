@@ -1,9 +1,0 @@
-{
-  "id": "017",
-  "title": "Better MPEGTS UDP Sender: Smoother Delivery Rate",
-  "status": "closed",
-  "priority": "H",
-  "project_title": "qcap-sdk",
-  "description": "The current MPEGTS UDP sender in the qcap-sdk exhibits non-uniform packet delivery rates, leading to potential buffer underruns/overruns and visual artifacts in downstream decoders. This issue aims to improve the sender's mechanism to achieve a consistently smoother and more predictable packet transmission, optimizing for constant bitrate (CBR) or managed variable bitrate (VBR) streams.",
-  "created_at": "2026-03-18"
-}
