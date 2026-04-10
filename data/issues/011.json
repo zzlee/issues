@@ -1,9 +1,0 @@
-{
-  "id": "011",
-  "title": "VCU Video Decoder Incompatibility with QCAP SDK (Petalinux 2023.2)",
-  "status": "closed",
-  "priority": "H",
-  "project_title": "sc6f0-dante",
-  "description": "The Video Codec Unit (VCU) hardware-accelerated decoder integrated into Petalinux 2023.2 is exhibiting critical compatibility failures with the proprietary QCAP SDK on the SC6F0-Dante platform. This regression disrupts video processing pipelines, necessitating a technical resolution to restore decoding functionality within the existing SDK framework.",
-  "created_at": "2026-03-18"
-}
