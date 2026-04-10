@@ -7,6 +7,7 @@
   "description": "Support for platform holoscan-cuda13-amd64 in qcap-sdk",
   "created_at": "2026-04-10",
   "comments": [
-    "Use docker image: `nvcr.io/nvidia/clara-holoscan/holoscan:v4.1.0-cuda13`"
+    "Use docker image: `nvcr.io/nvidia/clara-holoscan/holoscan:v4.1.0-cuda13`",
+    "target arch is amd64""
   ]
 }
