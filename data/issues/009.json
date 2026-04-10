@@ -3,6 +3,7 @@
   "title": "Integrate Si5391B DCO for Dante RX IP Core on New Board",
   "status": "open",
   "priority": "M",
+  "project_title": "sc6f0-dante",
   "description": "Integrate Si5391B DCO for Dante RX IP Core on New Board in sc6f0-dante",
   "created_at": "2026-04-10"
 }
