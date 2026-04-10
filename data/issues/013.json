@@ -1,0 +1,9 @@
+{
+  "id": "013",
+  "title": "Add VCU Video Decoder Test",
+  "status": "closed",
+  "priority": "H",
+  "project_title": "qcap-demos",
+  "description": "This issue tracks the addition of a VCU video decoder test to the `qcap-demos` project. This test will validate VCU decoding functionality and ensure proper integration with the existing demuxer framework, building upon the work from `ISSUE-001`.",
+  "created_at": "2026-03-23"
+}

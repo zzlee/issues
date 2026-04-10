@@ -1,0 +1,9 @@
+{
+  "id": "010",
+  "title": "Add Dante Video Processing Scaler IP",
+  "status": "closed",
+  "priority": "M",
+  "project_title": "sc6f0-dante",
+  "description": "Integrate a Dante Video Processing Scaler IP into the `sc6f0-dante` system to enable flexible video scaling and format conversion capabilities for Dante-enabled video streams.",
+  "created_at": "2026-03-20"
+}

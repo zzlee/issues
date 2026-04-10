@@ -1,0 +1,9 @@
+{
+  "id": "015",
+  "title": "Initial SDK Integration Framework (V4L2, ALSA, FFmpeg, libboost)",
+  "status": "open",
+  "priority": "H",
+  "project_title": "qcap-sdk",
+  "description": "This issue tracks the initial architecture and integration of the QCAP SDK. The goal is to establish a unified C/C++ framework that handles high-performance video (V4L2) and audio (ALSA) capture, leverages FFmpeg for encoding/decoding, and utilizes libboost for robust system-level abstractions and concurrency management.",
+  "created_at": "2026-03-18"
+}

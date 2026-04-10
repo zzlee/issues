@@ -1,0 +1,9 @@
+{
+  "id": "016",
+  "title": "VCU Video Decoder Failure in Petalinux 2023.2",
+  "status": "closed",
+  "priority": "H",
+  "project_title": "qcap-sdk",
+  "description": "The VCU video decoder within the Petalinux 2023.2 environment for the `qcap-sdk` project is non-functional, impacting core video processing capabilities. This issue is specifically observed in contexts involving `ZzVideoDecoder2_allegro2.cpp`.",
+  "created_at": "2026-03-19"
+}
