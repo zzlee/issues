@@ -1,0 +1,8 @@
+{
+  "id": "006",
+  "title": "Enhanced Recovery Mode via Boot-Time GPIO Interaction (Button Combinations)",
+  "status": "open",
+  "priority": "M",
+  "description": "Enhanced Recovery Mode via Boot-Time GPIO Interaction (Button Combinations) in sc6f0-dante",
+  "created_at": "2026-04-10"
+}
