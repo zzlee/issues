@@ -1,9 +1,0 @@
-{
-  "id": "014",
-  "title": "Memory Leakage in Asynchronous Snapshot Implementation",
-  "status": "closed",
-  "priority": "H",
-  "project_title": "qcap-sdk",
-  "description": "This issue tracks a critical memory leak identified during high-frequency asynchronous snapshot operations. Repeatedly triggering the snapshot API leads to continuous heap exhaustion, eventually causing the application to be terminated by the OOM (Out Of Memory) killer.",
-  "created_at": "2026-03-18"
-}
