@@ -1,1 +1,2 @@
-{\n  "id": "001",\n  "title": "support platform holoscan-cuda13-amd64",\n  "status": "open",\n  "priority": "M",\n  "description": "Support for platform holoscan-cuda13-amd64 in qcap-sdk",\n  "created_at": "2026-04-10"\n}
+{\n  "id": "001",\n  "title": "support platform holoscan-cuda13-amd64",\n  "status": "open",\n  "priority": "M",
+  "project_title": "qcap-sdk",\n  "description": "Support for platform holoscan-cuda13-amd64 in qcap-sdk",\n  "created_at": "2026-04-10"\n}

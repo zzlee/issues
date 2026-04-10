@@ -1,1 +1,2 @@
-{\n  "id": "002",\n  "title": "Integrate vcuapp module to ZzVideoEncoder2_allegro2",\n  "status": "open",\n  "priority": "M",\n  "description": "Integrate vcuapp module to ZzVideoEncoder2_allegro2 in qcap-sdk",\n  "created_at": "2026-04-10"\n}
+{\n  "id": "002",\n  "title": "Integrate vcuapp module to ZzVideoEncoder2_allegro2",\n  "status": "open",\n  "priority": "M",
+  "project_title": "qcap-sdk",\n  "description": "Integrate vcuapp module to ZzVideoEncoder2_allegro2 in qcap-sdk",\n  "created_at": "2026-04-10"\n}
