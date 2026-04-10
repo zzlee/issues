@@ -57,7 +57,7 @@ Any modification (Create, Update, Archive) **must** be followed by a standard Gi
 Every interaction must include:
 1.  **Executive Summary:** Brief statement of action (e.g., "Archiving completed issue #005").
 2.  **Command Block:** Ready-to-execute Bash code blocks.
-3.  **Status Update:** A Markdown table displaying the current state of the affected issue(s) after the operation. Be sure the project name is included when displaying an issue.
+3.  **Status Update:** A Markdown table displaying the current state of the affected issue(s) after the operation.
 
 ## 7. General Housekeeping
 *   **Temporary Scripts:** Always remove any temporary shell scripts immediately after execution to keep the workspace clean.
