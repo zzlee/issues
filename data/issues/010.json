@@ -1,0 +1,10 @@
+{
+  "id": "010",
+  "title": "Evaluate hardware for SDI RX/TX",
+  "status": "open",
+  "priority": "M",
+  "project_title": "sc6f0-n1-12gsdi",
+  "description": "Evaluate the hardware for SDI RX/TX for project sc6f0-n1-12gsdi",
+  "created_at": "2026-04-14",
+  "comments": []
+}
