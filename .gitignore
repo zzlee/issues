@@ -10,13 +10,10 @@ Thumbs.db
 *.tmp.sh
 tmp_*.sh
 
-# Ignore volatile UI state
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/app.json
-
-# Optional: Ignore all plugins to keep repo small
-.obsidian/plugins/
-
-# Security: Ignore specific plugin settings that might contain API keys
-.obsidian/plugins/plugin-name/data.json
+# 忽略所有 Obsidian 設定檔
+.obsidian/*
+# 排除核心設定檔（如果你想同步外觀、套件清單與快捷鍵）
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/community-plugins.json
+!.obsidian/hotkeys.json
