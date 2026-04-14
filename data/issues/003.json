@@ -1,9 +1,0 @@
-{
-  "id": "003",
-  "title": "VCU Decoder Timestamp Handling Discrepancies",
-  "status": "open",
-  "priority": "M",
-  "project_title": "qcap-sdk",
-  "description": "VCU Decoder Timestamp Handling Discrepancies in qcap-sdk",
-  "created_at": "2026-04-10"
-}
