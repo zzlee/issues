@@ -9,3 +9,14 @@ Thumbs.db
 # Temporary scripts
 *.tmp.sh
 tmp_*.sh
+
+# Ignore volatile UI state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/app.json
+
+# Optional: Ignore all plugins to keep repo small
+.obsidian/plugins/
+
+# Security: Ignore specific plugin settings that might contain API keys
+.obsidian/plugins/plugin-name/data.json
