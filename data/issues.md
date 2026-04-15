@@ -1,7 +1,7 @@
 | ID                   | Title                                                                       | Status      | Priority | Project         |
 | -------------------- | --------------------------------------------------------------------------- | ----------- | -------- | --------------- |
 | [001](issues/001.md) | support platform holoscan-cuda13-amd64                                      | open        | M        | qcap-sdk        |
-| [002](issues/002.md) | Integrate vcuapp module to ZzVideoEncoder2_allegro2                         | open        | M        | qcap-sdk        |
+| [002](issues/002.md) | Integrate vcuapp module to ZzVideoEncoder2_allegro2                         | closed      | M        | qcap-sdk        |
 | [003](issues/003.md) | VCU Decoder Timestamp Handling Discrepancies                                | open        | M        | qcap-sdk        |
 | [005](issues/005.md) | System Hang During Linux Kernel Initialization (Suspected FPGA Interaction) | open        | M        | sc6f0-dante     |
 | [006](issues/006.md) | Enhanced Recovery Mode via Boot-Time GPIO Interaction (Button Combinations) | open        | M        | sc6f0-dante     |
