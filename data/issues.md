@@ -12,3 +12,4 @@
 | [011](issues/011.md) | 面板按鈕 GPIO 無作用                                                               | in_progress | M        | sc6f0-dante     |
 | [013](issues/013.md) | 插拔 HDMI 或切解析度, Dante ultra 串流會不作用                                           | in_progress | M        | sc6f0-dante     |
 | [014](issues/014.md) | MAC 修改                                                                      | open        | M        | sc6f0-dante     |
+| [015](issues/015.md) | Verify line-in/out using the ALSA driver                                 | open        | M        | sc6f0-dante     |
