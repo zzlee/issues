@@ -14,8 +14,10 @@ export interface IssueFile {
   status: string;
   priority: string;
   project: string;
+  created_at?: string;
   description?: string;
   comments?: string[];
+  rawContent?: string;
 }
 
 export class IssueService {
@@ -53,22 +55,56 @@ export class IssueService {
   }
 
   private parseIssueFile(content: string): IssueFile {
-    const lines = content.split('\n');
-    const issue: Partial<IssueFile> = {};
-    
-    for (const line of lines) {
-      if (line.startsWith('title: ')) issue.title = line.replace('title: ', '').trim();
-      if (line.startsWith('status: ')) issue.status = line.replace('status: ', '').trim();
-      if (line.startsWith('priority: ')) issue.priority = line.replace('priority: ', '').trim();
-      if (line.startsWith('project: ')) issue.project = line.replace('project: ', '').trim();
+    const issue: Partial<IssueFile> = { rawContent: content };
+    const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    const metadata = frontMatterMatch ? frontMatterMatch[1] : content;
+
+    for (const line of metadata.split('\n')) {
+      const match = line.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
+      if (!match) continue;
+
+      const [, key, value] = match;
+      const trimmed = value.trim();
+      if (key === 'title') issue.title = trimmed;
+      if (key === 'status') issue.status = trimmed;
+      if (key === 'priority') issue.priority = trimmed;
+      if (key === 'project_title' || key === 'project') issue.project = trimmed;
+      if (key === 'created_at') issue.created_at = trimmed;
     }
-    
+
     return issue as IssueFile;
+  }
+
+  private upsertFrontMatterValue(frontMatter: string, key: string, value: string): string {
+    const line = `${key}: ${value}`;
+    const regex = new RegExp(`^${key}:.*$`, 'm');
+    if (regex.test(frontMatter)) {
+      return frontMatter.replace(regex, line);
+    }
+    return `${frontMatter.replace(/\s*$/, '')}\n${line}`;
   }
 
   async saveIssueFile(id: string, issue: IssueFile): Promise<void> {
     const filePath = path.join(this.issuesDir, `${id}.md`);
-    const content = `title: ${issue.title}\nstatus: ${issue.status}\npriority: ${issue.priority}\nproject: ${issue.project}\n`;
+    const project = issue.project || '';
+    const rawContent = issue.rawContent;
+
+    if (rawContent?.startsWith('---\n')) {
+      const updated = rawContent.replace(/^---\n([\s\S]*?)\n---/, (_match, frontMatter) => {
+        let nextFrontMatter = frontMatter;
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'id', id);
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'title', issue.title);
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'status', issue.status);
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'priority', issue.priority);
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'project_title', project);
+        return `---\n${nextFrontMatter}\n---`;
+      });
+      await fs.writeFile(filePath, updated.endsWith('\n') ? updated : `${updated}\n`);
+      return;
+    }
+
+    const createdAt = issue.created_at || new Date().toISOString().slice(0, 10);
+    const content = `---\nid: ${id}\ntitle: ${issue.title}\nstatus: ${issue.status}\npriority: ${issue.priority}\nproject_title: ${project}\ncreated_at: ${createdAt}\n---\n\n# ${issue.title}\n\n## Description\n${issue.description || `${issue.title} in ${project}`}\n`;
     await fs.writeFile(filePath, content);
   }
 
