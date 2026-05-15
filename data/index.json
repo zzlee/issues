@@ -2,7 +2,7 @@
   {
     "id": "001",
     "t": "support platform holoscan-cuda13-amd64",
-    "s": "open",
+    "s": "in_progress",
     "p": "M",
     "pj": "qcap-sdk"
   },
