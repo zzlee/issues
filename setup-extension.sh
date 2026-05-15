@@ -6,15 +6,35 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-EXTENSION_DIR="issues-manager-extension"
+OLD_DIR="issues-manager-extension"
+NEW_DIR=".pi/extensions/issues-manager-extension"
+EXTENSION_DIR="$NEW_DIR"
 PACKAGE_JSON="$EXTENSION_DIR/package.json"
-PI_EXT_DIR=".pi/extensions"
 
-echo -e "${BLUE}Starting setup for $EXTENSION_DIR...${NC}"
+echo -e "${BLUE}Starting setup for extension...${NC}"
 
-# 1. Check if extension directory exists
-if [ ! -d "$EXTENSION_DIR" ]; then
-    echo -e "${RED}Error: Directory $EXTENSION_DIR not found!${NC}"
+# 1. Move the extension to the new location if it's still in the old one
+if [ -d "$OLD_DIR" ]; then
+    echo -e "${BLUE}Moving $OLD_DIR to $NEW_DIR...${NC}"
+    mkdir -p ".pi/extensions"
+    
+    # If there's a symlink or existing entry at the destination, remove it first to avoid conflicts
+    if [ -L "$NEW_DIR" ] || [ -e "$NEW_DIR" ]; then
+        echo "Cleaning up existing entry at $NEW_DIR..."
+        rm -rf "$NEW_DIR"
+    fi
+
+    mv "$OLD_DIR" "$NEW_DIR"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Successfully moved extension.${NC}"
+    else
+        echo -e "${RED}Failed to move extension!${NC}"
+        exit 1
+    fi
+elif [ -d "$NEW_DIR" ]; then
+    echo -e "${BLUE}Extension is already in the correct location ($NEW_DIR).${NC}"
+else
+    echo -e "${RED}Error: Extension directory not found in $OLD_DIR or $NEW_DIR!${NC}"
     exit 1
 fi
 
@@ -53,20 +73,5 @@ else
     exit 1
 fi
 
-# 4. Create .pi/extensions directory
-echo "Ensuring $PI_EXT_DIR exists..."
-mkdir -p "$PI_EXT_DIR"
-
-# 5. Create symlink
-# We use absolute path for the symlink target to ensure it works regardless of where pi is called from
-ABS_EXTENSION_PATH=$(realpath "$EXTENSION_DIR")
-
-if [ -L "$PI_EXT_DIR/issues-manager-extension" ]; then
-    echo "Symlink already exists. Removing old one..."
-    rm "$PI_EXT_DIR/issues-manager-extension"
-fi
-
-echo "Creating symlink: $PI_EXT_DIR/issues-manager-extension -> $ABS_EXTENSION_PATH"
-ln -s "$ABS_EXTENSION_PATH" "$PI_EXT_DIR/issues-manager-extension"
-
-echo -e "${GREEN}Setup complete! Your extension should now load automatically when running 'pi' in this directory.${NC}"
+echo -e "${GREEN}Setup complete! Your extension is now located in $NEW_DIR and will load automatically when running 'pi' in this directory.${NC}"
+echo -e "${BLUE}Note: Since the extension is now inside .pi/, it may be ignored by Git if .pi/ is in your .gitignore.${NC}"
