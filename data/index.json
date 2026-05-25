@@ -44,7 +44,7 @@
   {
     "id": "010",
     "t": "Evaluate hardware for SDI RX/TX",
-    "s": "in_progress",
+    "s": "closed",
     "p": "M",
     "pj": "sc6f0-n1-12gsdi"
   },
