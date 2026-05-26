@@ -6,10 +6,8 @@
 | [007](./issues/007.md) | Dante Ultra TX Encoder IP Functionality Issue After ETH0 Up | open | M | sc6f0-dante |
 | [008](./issues/008.md) | Customize Xilinx HDMI TX DRM Linux Driver for FPGA Design | open | M | sc6f0-dante |
 | [009](./issues/009.md) | Integrate Si5391B DCO for Dante RX IP Core on New Board | open | M | sc6f0-dante |
-| [010](./issues/010.md) | Evaluate hardware for SDI RX/TX | closed | M | sc6f0-n1-12gsdi |
 | [011](./issues/011.md) | 面板按鈕 GPIO 無作用 | in_progress | M | sc6f0-dante |
 | [013](./issues/013.md) | 插拔 HDMI 或切解析度, Dante ultra 串流會不作用 | in_progress | M | sc6f0-dante |
 | [014](./issues/014.md) | MAC 修改 | open | M | sc6f0-dante |
 | [015](./issues/015.md) | Verify line-in/out using the ALSA driver | open | M | sc6f0-dante |
 | [016](./issues/016.md) | Add support to SDI RX/TX audio | open | M | sc6f0-n1-12gsdi |
-| [017](./issues/017.md) | Use Pi coding agent to implementa file muxer for qcap-dev | closed | M | qcap-dev |

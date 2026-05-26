@@ -42,13 +42,6 @@
     "pj": "sc6f0-dante"
   },
   {
-    "id": "010",
-    "t": "Evaluate hardware for SDI RX/TX",
-    "s": "closed",
-    "p": "M",
-    "pj": "sc6f0-n1-12gsdi"
-  },
-  {
     "id": "011",
     "t": "面板按鈕 GPIO 無作用",
     "s": "in_progress",
@@ -82,12 +75,5 @@
     "s": "open",
     "p": "M",
     "pj": "sc6f0-n1-12gsdi"
-  },
-  {
-    "id": "017",
-    "t": "Use Pi coding agent to implementa file muxer for qcap-dev",
-    "s": "closed",
-    "p": "M",
-    "pj": "qcap-dev"
   }
 ]
