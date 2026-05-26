@@ -1,6 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { IssueService, IssueIndex } from "./issue-service";
+import { IssueService, IssueIndex, formatProjects, normalizeProjects } from "./issue-service";
 
 export async function registerTools(pi: ExtensionAPI, issueService: IssueService) {
   pi.registerTool({
@@ -10,9 +10,18 @@ export async function registerTools(pi: ExtensionAPI, issueService: IssueService
     parameters: Type.Object({
       title: Type.String({ description: "The title of the issue" }),
       priority: Type.String({ description: "Priority: H, M, or L", enum: ["H", "M", "L"] }),
-      project: Type.String({ description: "The project title" }),
+      project: Type.Optional(Type.String({ description: "Backward-compatible single project title" })),
+      projects: Type.Optional(Type.Array(Type.String({ description: "Project title" }), { description: "Project titles assigned to the issue" })),
     }),
     async execute(_toolCallId, params) {
+      const projects = normalizeProjects(params.projects?.length ? params.projects : params.project);
+      if (projects.length === 0) {
+        return {
+          content: [{ type: "text", text: "At least one project is required." }],
+          isError: true,
+        };
+      }
+
       const index = await issueService.getIndex();
       const newId = (index.length > 0 ? parseInt(index[index.length - 1].id) + 1 : 1).toString().padStart(3, '0');
 
@@ -21,14 +30,14 @@ export async function registerTools(pi: ExtensionAPI, issueService: IssueService
         t: params.title,
         s: "open",
         p: params.priority,
-        pj: params.project
+        pj: projects
       };
 
       const newIssueFile: any = {
         title: params.title,
         status: "open",
         priority: params.priority,
-        project: params.project
+        projects
       };
 
       await issueService.saveIssueFile(newId, newIssueFile);
@@ -77,13 +86,56 @@ export async function registerTools(pi: ExtensionAPI, issueService: IssueService
   });
 
   pi.registerTool({
+    name: "update_issue_projects",
+    label: "Update Issue Projects",
+    description: "Assign one or more projects to an existing issue",
+    parameters: Type.Object({
+      id: Type.String({ description: "The issue ID" }),
+      project: Type.Optional(Type.String({ description: "Backward-compatible single project title" })),
+      projects: Type.Optional(Type.Array(Type.String({ description: "Project title" }), { description: "Project titles assigned to the issue" })),
+    }),
+    async execute(_toolCallId, params) {
+      const projects = normalizeProjects(params.projects?.length ? params.projects : params.project);
+      if (projects.length === 0) {
+        return {
+          content: [{ type: "text", text: "At least one project is required." }],
+          isError: true,
+        };
+      }
+
+      const issue = await issueService.getIssueFile(params.id);
+      if (!issue) {
+        return {
+          content: [{ type: "text", text: `Issue #${params.id} not found.` }],
+          isError: true,
+        };
+      }
+
+      issue.projects = projects;
+      await issueService.saveIssueFile(params.id, issue);
+
+      const index = await issueService.getIndex();
+      const idx = index.findIndex(i => i.id === params.id);
+      if (idx !== -1) {
+        index[idx].pj = projects;
+        await issueService.updateIndex(index);
+        await issueService.updateIssuesList(index);
+      }
+
+      return {
+        content: [{ type: "text", text: `Updated issue #${params.id} projects: ${formatProjects(projects)}` }],
+      };
+    },
+  });
+
+  pi.registerTool({
     name: "list_issues",
     label: "List Issues",
     description: "Get a list of all current issues",
     parameters: Type.Object({}),
     async execute() {
       const index = await issueService.getIndex();
-      const list = index.map(i => `${i.id}: ${i.t} [${i.s}] [${i.p}] [${i.pj}]`).join('\n');
+      const list = index.map(i => `${i.id}: ${i.t} [${i.s}] [${i.p}] [${formatProjects(i.pj)}]`).join('\n');
       return {
         content: [{ type: "text", text: list || "No issues found." }],
       };
@@ -106,7 +158,7 @@ export async function registerTools(pi: ExtensionAPI, issueService: IssueService
         };
       }
 
-      const details = `Title: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProject: ${issue.project}`;
+      const details = `Title: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProjects: ${formatProjects(issue.projects)}`;
       return {
         content: [{ type: "text", text: details }],
       };

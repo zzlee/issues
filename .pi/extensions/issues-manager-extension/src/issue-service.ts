@@ -1,23 +1,45 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+export type ProjectField = string | string[];
+
 export interface IssueIndex {
   id: string;
   t: string;
   s: string;
   p: string;
-  pj: string;
+  pj: ProjectField;
 }
 
 export interface IssueFile {
   title: string;
   status: string;
   priority: string;
-  project: string;
+  projects: string[];
+  /** Backward-compatible alias for older callers/frontmatter. */
+  project?: string;
   created_at?: string;
   description?: string;
   comments?: string[];
   rawContent?: string;
+}
+
+export function normalizeProjects(input?: ProjectField | null): string[] {
+  const values = Array.isArray(input) ? input : [input];
+  const projects = values.flatMap((value) => {
+    if (!value) return [];
+    const normalized = value.trim().replace(/^\[(.*)\]$/, '$1');
+    return normalized
+      .split(',')
+      .map((project) => project.trim().replace(/^['"]|['"]$/g, ''))
+      .filter(Boolean);
+  });
+
+  return [...new Set(projects)];
+}
+
+export function formatProjects(input?: ProjectField | null): string {
+  return normalizeProjects(input).join(', ');
 }
 
 export class IssueService {
@@ -41,7 +63,7 @@ export class IssueService {
   }
 
   async updateIndex(index: IssueIndex[]): Promise<void> {
-    await fs.writeFile(this.indexFilePath, JSON.stringify(index, null, 2));
+    await fs.writeFile(this.indexFilePath, JSON.stringify(index, null, 2) + '\n');
   }
 
   async getIssueFile(id: string): Promise<IssueFile | null> {
@@ -58,6 +80,7 @@ export class IssueService {
     const issue: Partial<IssueFile> = { rawContent: content };
     const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     const metadata = frontMatterMatch ? frontMatterMatch[1] : content;
+    const projects: string[] = [];
 
     for (const line of metadata.split('\n')) {
       const match = line.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
@@ -68,9 +91,14 @@ export class IssueService {
       if (key === 'title') issue.title = trimmed;
       if (key === 'status') issue.status = trimmed;
       if (key === 'priority') issue.priority = trimmed;
-      if (key === 'project_title' || key === 'project') issue.project = trimmed;
+      if (key === 'projects' || key === 'project_title' || key === 'project') {
+        projects.push(...normalizeProjects(trimmed));
+      }
       if (key === 'created_at') issue.created_at = trimmed;
     }
+
+    issue.projects = normalizeProjects(projects);
+    issue.project = issue.projects[0] || '';
 
     return issue as IssueFile;
   }
@@ -84,19 +112,31 @@ export class IssueService {
     return `${frontMatter.replace(/\s*$/, '')}\n${line}`;
   }
 
+  private removeFrontMatterValues(frontMatter: string, keys: string[]): string {
+    const keySet = new Set(keys);
+    return frontMatter
+      .split('\n')
+      .filter((line) => {
+        const match = line.match(/^([A-Za-z_][A-Za-z0-9_]*):/);
+        return !match || !keySet.has(match[1]);
+      })
+      .join('\n');
+  }
+
   async saveIssueFile(id: string, issue: IssueFile): Promise<void> {
     const filePath = path.join(this.issuesDir, `${id}.md`);
-    const project = issue.project || '';
+    const projects = normalizeProjects(issue.projects?.length ? issue.projects : issue.project);
+    const projectText = formatProjects(projects);
     const rawContent = issue.rawContent;
 
     if (rawContent?.startsWith('---\n')) {
       const updated = rawContent.replace(/^---\n([\s\S]*?)\n---/, (_match, frontMatter) => {
-        let nextFrontMatter = frontMatter;
+        let nextFrontMatter = this.removeFrontMatterValues(frontMatter, ['project', 'project_title', 'projects']);
         nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'id', id);
         nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'title', issue.title);
         nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'status', issue.status);
         nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'priority', issue.priority);
-        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'project_title', project);
+        nextFrontMatter = this.upsertFrontMatterValue(nextFrontMatter, 'projects', projectText);
         return `---\n${nextFrontMatter}\n---`;
       });
       await fs.writeFile(filePath, updated.endsWith('\n') ? updated : `${updated}\n`);
@@ -104,7 +144,7 @@ export class IssueService {
     }
 
     const createdAt = issue.created_at || new Date().toISOString().slice(0, 10);
-    const content = `---\nid: ${id}\ntitle: ${issue.title}\nstatus: ${issue.status}\npriority: ${issue.priority}\nproject_title: ${project}\ncreated_at: ${createdAt}\n---\n\n# ${issue.title}\n\n## Description\n${issue.description || `${issue.title} in ${project}`}\n`;
+    const content = `---\nid: ${id}\ntitle: ${issue.title}\nstatus: ${issue.status}\npriority: ${issue.priority}\nprojects: ${projectText}\ncreated_at: ${createdAt}\n---\n\n# ${issue.title}\n\n## Description\n${issue.description || `${issue.title} in ${projectText}`}\n`;
     await fs.writeFile(filePath, content);
   }
 
@@ -114,9 +154,9 @@ export class IssueService {
   }
 
   async updateIssuesList(issues: IssueIndex[]): Promise<void> {
-    let markdown = '| ID | Title | Status | Priority | Project |\n|---|---|---|---|---|\n';
+    let markdown = '| ID | Title | Status | Priority | Projects |\n|---|---|---|---|---|\n';
     for (const issue of issues) {
-      markdown += `| ${issue.id} | ${issue.t} | ${issue.s} | ${issue.p} | ${issue.pj} |\n`;
+      markdown += `| [${issue.id}](./issues/${issue.id}.md) | ${issue.t} | ${issue.s} | ${issue.p} | ${formatProjects(issue.pj)} |\n`;
     }
     await fs.writeFile(this.issuesListFilePath, markdown);
   }

@@ -1,6 +1,5 @@
 import type { ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
-import { IssueService, IssueIndex } from "./issue-service";
-import path from "node:path";
+import { IssueService, IssueIndex, formatProjects, normalizeProjects } from "./issue-service";
 
 export async function registerCommands(ctx: ExtensionCommandContext, issueService: IssueService) {
   // /issues:list
@@ -13,14 +12,14 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
         return;
       }
 
-      const options = index.map(i => `${i.id} - ${i.t} [${i.s}] (${i.pj})`);
+      const options = index.map(i => `${i.id} - ${i.t} [${i.s}] (${formatProjects(i.pj)})`);
       const selected = await ctx.ui.select("Select an issue to view details or exit:", options);
       
       if (selected) {
         const id = selected.split(' - ')[0];
         const issue = await issueService.getIssueFile(id);
         if (issue) {
-          ctx.ui.notify(`Issue #${id}: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProject: ${issue.project}`, "info");
+          ctx.ui.notify(`Issue #${id}: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProjects: ${formatProjects(issue.projects)}`, "info");
         }
       }
     }
@@ -36,8 +35,9 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
       const priority = await ctx.ui.select("Priority:", ["H", "M", "L"]);
       if (!priority) return;
 
-      const project = await ctx.ui.input("Project Name:");
-      if (!project) return;
+      const projectInput = await ctx.ui.input("Project Names (comma-separated):");
+      if (!projectInput) return;
+      const projects = normalizeProjects(projectInput);
 
       const status = "open";
 
@@ -49,14 +49,14 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
         t: title,
         s: status,
         p: priority,
-        pj: project
+        pj: projects
       };
 
       const newIssueFile: any = {
         title,
         status,
         priority,
-        project
+        projects
       };
 
       await issueService.saveIssueFile(newId, newIssueFile);
@@ -65,6 +65,40 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
       await issueService.updateIssuesList(index);
 
       ctx.ui.notify(`Created issue #${newId}`, "success");
+    }
+  });
+
+  // /issues:projects
+  ctx.registerCommand("issues:projects", {
+    description: "Assign one or more projects to an issue",
+    handler: async (args, ctx) => {
+      const trimmedArgs = args.trim();
+      const argMatch = trimmedArgs.match(/^(\S+)\s+([\s\S]+)$/);
+      const id = argMatch?.[1] || trimmedArgs || await ctx.ui.input("Issue ID:");
+      if (!id) return;
+
+      const projectInput = argMatch?.[2] || await ctx.ui.input("Project Names (comma-separated):");
+      if (!projectInput) return;
+      const projects = normalizeProjects(projectInput);
+
+      const issue = await issueService.getIssueFile(id);
+      if (!issue) {
+        ctx.ui.notify(`Issue #${id} not found.`, "error");
+        return;
+      }
+
+      issue.projects = projects;
+      await issueService.saveIssueFile(id, issue);
+
+      const index = await issueService.getIndex();
+      const idx = index.findIndex(i => i.id === id);
+      if (idx !== -1) {
+        index[idx].pj = projects;
+        await issueService.updateIndex(index);
+        await issueService.updateIssuesList(index);
+      }
+
+      ctx.ui.notify(`Updated issue #${id} projects: ${formatProjects(projects)}`, "success");
     }
   });
 
