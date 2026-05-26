@@ -11,4 +11,4 @@
 | [014](./issues/014.md) | MAC 修改 | open | M | sc6f0-dante |
 | [015](./issues/015.md) | Verify line-in/out using the ALSA driver | open | M | sc6f0-dante |
 | [016](./issues/016.md) | Add support to SDI RX/TX audio | open | M | sc6f0-n1-12gsdi |
-| [017](./issues/017.md) | Xilinx Mixer DRM driver is not working with AB24 overlay | open | H | sc6f0-sdi |
+| [017](./issues/017.md) | Xilinx Mixer DRM driver is not working with AB24 overlay | open | H | sc6f0-sdi, qcap-dev |

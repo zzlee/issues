@@ -104,7 +104,8 @@
     "s": "open",
     "p": "H",
     "pj": [
-      "sc6f0-sdi"
+      "sc6f0-sdi",
+      "qcap-dev"
     ]
   }
 ]
