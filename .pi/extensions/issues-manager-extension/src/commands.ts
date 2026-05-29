@@ -1,9 +1,26 @@
-import type { ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
 import { IssueService, IssueIndex, formatProjects, normalizeProjects } from "./issue-service";
 
-export async function registerCommands(ctx: ExtensionCommandContext, issueService: IssueService) {
+function formatIssueListItem(issue: IssueIndex): string {
+  return `${issue.id} - ${issue.t} [${issue.s}] (${formatProjects(issue.pj)})`;
+}
+
+function formatIssueDetails(id: string, issue: Awaited<ReturnType<IssueService["getIssueFile"]>>): string {
+  if (!issue) return "";
+  return `Issue #${id}: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProjects: ${formatProjects(issue.projects)}`;
+}
+
+function yellowIssueText(ctx: ExtensionCommandContext, text: string): string {
+  return ctx.ui.theme.fg("warning", text);
+}
+
+function stripAnsi(text: string): string {
+  return text.replace(/\x1b\[[0-9;?]*[ -/]*[@-~]/g, "");
+}
+
+export async function registerCommands(pi: ExtensionAPI, issueService: IssueService) {
   // /issues:list
-  ctx.registerCommand("issues:list", {
+  pi.registerCommand("issues:list", {
     description: "List all issues in a TUI-like format",
     handler: async (args, ctx) => {
       const index = await issueService.getIndex();
@@ -12,21 +29,30 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
         return;
       }
 
-      const options = index.map(i => `${i.id} - ${i.t} [${i.s}] (${formatProjects(i.pj)})`);
-      const selected = await ctx.ui.select("Select an issue to view details or exit:", options);
+      const options = index.map((issue) => ({
+        id: issue.id,
+        label: yellowIssueText(ctx, formatIssueListItem(issue)),
+      }));
+      const selected = await ctx.ui.select(
+        "Select an issue to view details or exit:",
+        options.map((option) => option.label),
+      );
       
       if (selected) {
-        const id = selected.split(' - ')[0];
+        const id = options.find((option) => option.label === selected)?.id
+          ?? stripAnsi(selected).split(" - ")[0];
+        if (!id) return;
+
         const issue = await issueService.getIssueFile(id);
         if (issue) {
-          ctx.ui.notify(`Issue #${id}: ${issue.title}\nStatus: ${issue.status}\nPriority: ${issue.priority}\nProjects: ${formatProjects(issue.projects)}`, "info");
+          ctx.ui.notify(yellowIssueText(ctx, formatIssueDetails(id, issue)), "info");
         }
       }
     }
   });
 
   // /issues:new
-  ctx.registerCommand("issues:new", {
+  pi.registerCommand("issues:new", {
     description: "Create a new issue via a wizard",
     handler: async (args, ctx) => {
       const title = await ctx.ui.input("Issue Title:");
@@ -69,7 +95,7 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
   });
 
   // /issues:projects
-  ctx.registerCommand("issues:projects", {
+  pi.registerCommand("issues:projects", {
     description: "Assign one or more projects to an issue",
     handler: async (args, ctx) => {
       const trimmedArgs = args.trim();
@@ -103,7 +129,7 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
   });
 
   // /issues:status
-  ctx.registerCommand("issues:status", {
+  pi.registerCommand("issues:status", {
     description: "Show current issues status in a widget",
     handler: async (args, ctx) => {
       const index = await issueService.getIndex();
@@ -115,7 +141,7 @@ export async function registerCommands(ctx: ExtensionCommandContext, issueServic
   });
 
   // /issues:archive
-  ctx.registerCommand("issues:archive", {
+  pi.registerCommand("issues:archive", {
     description: "Archive an issue",
     handler: async (args, ctx) => {
       const id = args || await ctx.ui.input("Issue ID to archive:");
