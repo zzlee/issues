@@ -116,5 +116,14 @@
     "pj": [
       "qbot-dev"
     ]
+  },
+  {
+    "id": "019",
+    "t": "Audio drifting compensation algorithm for audio-sink-ALSA",
+    "s": "open",
+    "p": "M",
+    "pj": [
+      "qcap-dev"
+    ]
   }
 ]
