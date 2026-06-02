@@ -9,15 +9,6 @@
     ]
   },
   {
-    "id": "005",
-    "t": "System Hang During Linux Kernel Initialization (Suspected FPGA Interaction)",
-    "s": "closed",
-    "p": "M",
-    "pj": [
-      "sc6f0-dante"
-    ]
-  },
-  {
     "id": "006",
     "t": "Enhanced Recovery Mode via Boot-Time GPIO Interaction (Button Combinations)",
     "s": "open",
