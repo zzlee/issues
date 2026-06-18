@@ -61,7 +61,7 @@ class IssueTableComponent {
     const statusW = 12;
     const priW = 5;
     const projW = Math.max(10, Math.min(30, Math.floor(width * 0.22)));
-    const titleW = Math.max(10, width - idW - statusW - priW - projW - 8);
+    const titleW = Math.max(10, width - idW - statusW - priW - projW - 12);
 
     // Title
     lines.push(this.theme.bold(this.theme.fg("accent", "Issues List")));
@@ -156,7 +156,23 @@ export async function registerCommands(pi: ExtensionAPI, issueService: IssueServ
 
       const selectedId = await ctx.ui.custom<string | undefined>(
         (tui, theme, _kb, done) => {
-          return new IssueTableComponent(tui, theme, index, done);
+          const table = new IssueTableComponent(tui, theme, index, done);
+
+          return {
+            render: (w: number) => {
+              const innerW = Math.max(1, w - 2);
+              const topBorder = theme.fg("accent", "┌" + "─".repeat(innerW) + "┐");
+              const bottomBorder = theme.fg("accent", "└" + "─".repeat(innerW) + "┘");
+              const innerLines = table.render(innerW);
+              const borderedLines = innerLines.map((line) => {
+                const pad = Math.max(0, innerW - visibleWidth(line));
+                return theme.fg("accent", "│") + line + " ".repeat(pad) + theme.fg("accent", "│");
+              });
+              return [topBorder, ...borderedLines, bottomBorder];
+            },
+            invalidate: () => { table.invalidate(); },
+            handleInput: (data: string) => { table.handleInput(data); tui.requestRender(); },
+          };
         },
         {
           overlay: true,

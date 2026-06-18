@@ -98,5 +98,14 @@
     "pj": [
       "qbot-dev"
     ]
+  },
+  {
+    "id": "019",
+    "t": "support platform dgx-spark-cuda13-arm64",
+    "s": "closed",
+    "p": "M",
+    "pj": [
+      "qcap-sdk"
+    ]
   }
 ]
