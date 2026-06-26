@@ -29,7 +29,7 @@
   {
     "id": "008",
     "t": "Customize Xilinx HDMI TX DRM Linux Driver for FPGA Design",
-    "s": "open",
+    "s": "in_progress",
     "p": "M",
     "pj": [
       "sc6f0-dante"
