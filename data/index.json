@@ -36,17 +36,8 @@
     ]
   },
   {
-    "id": "009",
-    "t": "Integrate Si5391B DCO for Dante RX IP Core on New Board",
-    "s": "closed",
-    "p": "M",
-    "pj": [
-      "sc6f0-dante"
-    ]
-  },
-  {
     "id": "011",
-    "t": "面板按鈕 GPIO 無作用",
+    "t": "\u9762\u677f\u6309\u9215 GPIO \u7121\u4f5c\u7528",
     "s": "in_progress",
     "p": "M",
     "pj": [
@@ -55,17 +46,8 @@
   },
   {
     "id": "013",
-    "t": "插拔 HDMI 或切解析度, Dante ultra 串流會不作用",
+    "t": "\u63d2\u62d4 HDMI \u6216\u5207\u89e3\u6790\u5ea6, Dante ultra \u4e32\u6d41\u6703\u4e0d\u4f5c\u7528",
     "s": "in_progress",
-    "p": "M",
-    "pj": [
-      "sc6f0-dante"
-    ]
-  },
-  {
-    "id": "014",
-    "t": "MAC 修改",
-    "s": "closed",
     "p": "M",
     "pj": [
       "sc6f0-dante"
@@ -97,24 +79,6 @@
     "p": "M",
     "pj": [
       "qbot-dev"
-    ]
-  },
-  {
-    "id": "019",
-    "t": "support platform dgx-spark-cuda13-arm64",
-    "s": "closed",
-    "p": "M",
-    "pj": [
-      "qcap-sdk"
-    ]
-  },
-  {
-    "id": "020",
-    "t": "Dante audio to AES3 audio frame conversion",
-    "s": "closed",
-    "p": "M",
-    "pj": [
-      "sc6f0-dante"
     ]
   }
 ]
