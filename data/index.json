@@ -107,5 +107,14 @@
     "pj": [
       "qcap-sdk"
     ]
+  },
+  {
+    "id": "020",
+    "t": "Dante audio to AES3 audio frame conversion",
+    "s": "closed",
+    "p": "M",
+    "pj": [
+      "sc6f0-dante"
+    ]
   }
 ]
