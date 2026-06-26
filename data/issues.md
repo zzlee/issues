@@ -7,7 +7,7 @@
 | [009](./issues/009.md) | Integrate Si5391B DCO for Dante RX IP Core on New Board | closed | M | sc6f0-dante |
 | [011](./issues/011.md) | 面板按鈕 GPIO 無作用 | in_progress | M | sc6f0-dante |
 | [013](./issues/013.md) | 插拔 HDMI 或切解析度, Dante ultra 串流會不作用 | in_progress | M | sc6f0-dante |
-| [014](./issues/014.md) | MAC 修改 | open | M | sc6f0-dante |
+| [014](./issues/014.md) | MAC 修改 | closed | M | sc6f0-dante |
 | [015](./issues/015.md) | Verify line-in/out using the ALSA driver | open | M | sc6f0-dante |
 | [017](./issues/017.md) | Xilinx Mixer DRM driver is not working with AB24 overlay | open | M | sc6f0-sdi, qcap-dev |
 | [018](./issues/018.md) | Brainstorm about abstraction of ROS 2 system | open | M | qbot-dev |

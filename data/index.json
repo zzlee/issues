@@ -65,7 +65,7 @@
   {
     "id": "014",
     "t": "MAC 修改",
-    "s": "open",
+    "s": "closed",
     "p": "M",
     "pj": [
       "sc6f0-dante"
