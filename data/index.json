@@ -89,5 +89,14 @@
     "pj": [
       "sc6f0-dante"
     ]
+  },
+  {
+    "id": "020",
+    "t": "Fix Dante AV Ultra TX DCO ASRC drifting issue",
+    "s": "open",
+    "p": "M",
+    "pj": [
+      "sc6f0-ultra"
+    ]
   }
 ]
