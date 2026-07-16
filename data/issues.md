@@ -9,5 +9,5 @@
 | [015](./issues/015.md) | Verify line-in/out using the ALSA driver | open | M | sc6f0-dante |
 | [017](./issues/017.md) | Xilinx Mixer DRM driver is not working with AB24 overlay | open | M | sc6f0-sdi, qcap-dev |
 | [018](./issues/018.md) | Brainstorm about abstraction of ROS 2 system | open | M | qbot-dev |
-| [019](./issues/019.md) | Dante AV Ultra TX thumbnail is not functioning, always ```stream inactive```.  | open | M | sc6f0-dante |
-| [020](./issues/020.md) | Fix Dante AV Ultra TX DCO ASRC drifting issue | open | M | sc6f0-ultra |
+| [021](./issues/021.md) | Add customized DRM driver for specialized video sink sub-block. | open | M | sc6f0-dante, qcap-sdk |
+| [022](./issues/022.md) | Dante RX is working only when Fast-Switching is enabled. | open | M | sc6f0-dante |

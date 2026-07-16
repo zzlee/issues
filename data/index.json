@@ -82,21 +82,22 @@
     ]
   },
   {
-    "id": "019",
-    "t": "Dante AV Ultra TX thumbnail is not functioning, always ```stream inactive```. ",
+    "id": "021",
+    "t": "Add customized DRM driver for specialized video sink sub-block.",
+    "s": "open",
+    "p": "M",
+    "pj": [
+      "sc6f0-dante",
+      "qcap-sdk"
+    ]
+  },
+  {
+    "id": "022",
+    "t": "Dante RX is working only when Fast-Switching is enabled.",
     "s": "open",
     "p": "M",
     "pj": [
       "sc6f0-dante"
-    ]
-  },
-  {
-    "id": "020",
-    "t": "Fix Dante AV Ultra TX DCO ASRC drifting issue",
-    "s": "open",
-    "p": "M",
-    "pj": [
-      "sc6f0-ultra"
     ]
   }
 ]
