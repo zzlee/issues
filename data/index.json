@@ -99,5 +99,14 @@
     "pj": [
       "sc6f0-dante"
     ]
+  },
+  {
+    "id": "023",
+    "t": "SC6F0 Dante RX HDMI Audio errors in analyzer",
+    "s": "open",
+    "p": "M",
+    "pj": [
+      "sc6f0-dante"
+    ]
   }
 ]
