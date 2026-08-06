@@ -12,3 +12,4 @@
 | [021](./issues/021.md) | Add customized DRM driver for specialized video sink sub-block. | open | M | sc6f0-dante, qcap-sdk |
 | [022](./issues/022.md) | Dante RX is working only when Fast-Switching is enabled. | open | M | sc6f0-dante |
 | [023](./issues/023.md) | SC6F0 Dante RX HDMI Audio errors in analyzer | open | M | sc6f0-dante |
+| [024](./issues/024.md) | 增加 debian 13.6 支援 | open | M | qcap-sdk |
