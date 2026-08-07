@@ -112,7 +112,7 @@
   {
     "id": "024",
     "t": "增加 debian 13.6 支援",
-    "s": "open",
+    "s": "closed",
     "p": "M",
     "pj": [
       "qcap-sdk"
